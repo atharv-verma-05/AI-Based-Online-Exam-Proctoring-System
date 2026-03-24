@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: exam-proctoring-backend
+    env: python
+    rootDir: backend
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    startCommand: "gunicorn app:app --worker-class gthread --workers 1 --threads 4 --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.0

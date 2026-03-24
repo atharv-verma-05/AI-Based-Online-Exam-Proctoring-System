@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-based Online Exam Proctoring System — Real-time cheating detection with explainability">
+    <title>Exam Proctoring System — Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app-layout">
+
+    <!-- ═══════════ Sidebar ═══════════ -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo">EP</div>
+            <div class="sidebar-brand">
+                ExamProctor
+                <span>AI Proctoring System</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Overview</div>
+            <div class="nav-item active" data-page="exam" id="nav-exam">
+                <span class="nav-icon">🎯</span> Start Exam
+            </div>
+            <div class="nav-item" data-page="dashboard" id="nav-dashboard">
+                <span class="nav-icon">📊</span> Dashboard
+            </div>
+            <div class="nav-item" data-page="monitoring" id="nav-monitoring">
+                <span class="nav-icon">👁</span> Monitoring
+            </div>
+
+            <div class="nav-section-label">Data</div>
+            <div class="nav-item" data-page="violations" id="nav-violations">
+                <span class="nav-icon">⚠</span> Violations
+            </div>
+            <div class="nav-item" data-page="alerts" id="nav-alerts">
+                <span class="nav-icon">🔔</span> Alert Log
+            </div>
+
+            <div class="nav-section-label">Output</div>
+            <div class="nav-item" data-page="reports" id="nav-reports">
+                <span class="nav-icon">📄</span> Reports
+            </div>
+            <div class="nav-item" data-page="recordings" id="nav-recordings">
+                <span class="nav-icon">🎥</span> Recordings
+            </div>
+
+            <div class="nav-section-label">System</div>
+            <div class="nav-item" data-page="sessions" id="nav-sessions">
+                <span class="nav-icon">🎓</span> Sessions
+            </div>
+            <div class="nav-item" data-page="settings" id="nav-settings">
+                <span class="nav-icon">⚙</span> Settings
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <span class="status-dot"></span> System Online
+        </div>
+    </aside>
+
+    <!-- ═══════════ Main Content ═══════════ -->
+    <main class="main-content">
+
+        <!-- Top Bar -->
+        <header class="topbar">
+            <h1 class="topbar-title" id="page-title">Dashboard</h1>
+            <div class="topbar-actions">
+                <span class="topbar-time" id="topbar-clock"></span>
+                <button class="btn btn-sm" id="btn-refresh" title="Refresh data">↻ Refresh</button>
+            </div>
+        </header>
+
+        <div class="page-content">
+
+            <!-- ═══════════ START EXAM ═══════════ -->
+            <section class="page-section active" id="page-exam">
+                <div class="section-header">
+                    <div>
+                        <h2>Exam Proctoring</h2>
+                        <p>Start a live exam session with camera-based detection</p>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="btn-exam-start">▶ Start Exam</button>
+                        <button class="btn btn-danger" id="btn-exam-stop" disabled>■ End Exam</button>
+                    </div>
+                </div>
+
+                <!-- Exam Setup (shown before exam starts) -->
+                <div class="two-col" id="exam-setup-card" style="margin-bottom:var(--space-xl)">
+                    <!-- Left: Select Exam + Student Info -->
+                    <div class="card">
+                        <div class="card-header"><h3>Select Exam &amp; Student</h3></div>
+                        <div class="card-body">
+                            <div class="form-group" style="margin-bottom:var(--space-md)">
+                                <label class="form-label">Choose Exam</label>
+                                <select class="form-input" id="exam-select" style="cursor:pointer">
+                                    <option value="">— Loading exams... —</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Student ID</label>
+                                    <input class="form-input" type="text" id="exam-student-id" placeholder="STUDENT_001" value="STUDENT_001">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Student Name</label>
+                                    <input class="form-input" type="text" id="exam-student-name" placeholder="John Doe" value="John Doe">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Exam Name</label>
+                                    <input class="form-input" type="text" id="exam-name" placeholder="Final Examination" value="Final Examination" readonly>
+                                    <div class="form-help">Auto-filled from selection above</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Course</label>
+                                    <input class="form-input" type="text" id="exam-course" placeholder="Computer Science 101" value="Computer Science 101" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Manage Exams -->
+                    <div class="card">
+                        <div class="card-header"><h3>Manage Exams</h3></div>
+                        <div class="card-body">
+                            <div style="border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-md);margin-bottom:var(--space-md);background:var(--color-bg)">
+                                <div style="font-weight:600;margin-bottom:var(--space-sm);font-size:13px">Add New Exam</div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Exam Name</label>
+                                        <input class="form-input" type="text" id="new-exam-name" placeholder="e.g. Final Lab Exam">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Course</label>
+                                        <input class="form-input" type="text" id="new-exam-course" placeholder="e.g. Data Structures">
+                                    </div>
+                                </div>
+                                <div class="form-row" style="align-items:flex-end">
+                                    <div class="form-group">
+                                        <label class="form-label">Duration (min)</label>
+                                        <input class="form-input" type="number" id="new-exam-duration" value="60" min="5" style="max-width:120px">
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary btn-sm" id="btn-add-exam">+ Add Exam</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="font-weight:600;margin-bottom:var(--space-xs);font-size:13px">Available Exams</div>
+                            <div id="exam-list" style="max-height:200px;overflow-y:auto"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Feed + Stats (shown during exam) -->
+                <div class="two-col" id="exam-live-area" style="display:none">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>📹 Live Camera Feed</h3>
+                            <span class="badge badge-danger" id="exam-live-badge" style="display:none">● LIVE</span>
+                        </div>
+                        <div class="card-body" style="padding:0;background:#000;border-radius:0 0 8px 8px;min-height:360px;display:flex;align-items:center;justify-content:center">
+                            <img id="exam-video-feed" src="" alt="Webcam Feed" style="width:100%;display:none;border-radius:0 0 8px 8px">
+                            <div id="exam-video-placeholder" style="color:#666;font-size:14px">Camera will appear here when exam starts</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <!-- Session Info -->
+                        <div class="card" style="margin-bottom:var(--space-md)">
+                            <div class="card-header"><h3>Session Info</h3></div>
+                            <div class="card-body">
+                                <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm)">
+                                    <div><span class="stat-label">Student</span><br><strong id="exam-info-student">—</strong></div>
+                                    <div><span class="stat-label">Exam</span><br><strong id="exam-info-exam">—</strong></div>
+                                    <div><span class="stat-label">Duration</span><br><strong id="exam-info-duration" style="font-family:var(--font-mono)">00:00:00</strong></div>
+                                    <div><span class="stat-label">Violations</span><br><strong id="exam-info-violations" style="color:var(--color-danger)">0</strong></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cheating Probability -->
+                        <div class="card" style="margin-bottom:var(--space-md)">
+                            <div class="card-header"><h3>Cheating Probability</h3></div>
+                            <div class="card-body">
+                                <div class="gauge-container" style="padding:var(--space-md)">
+                                    <div class="gauge-ring" style="width:140px;height:140px">
+                                        <svg viewBox="0 0 180 180">
+                                            <circle class="gauge-track" cx="90" cy="90" r="80"/>
+                                            <circle class="gauge-fill low" cx="90" cy="90" r="80" id="exam-gauge-circle"/>
+                                        </svg>
+                                        <div class="gauge-value">
+                                            <div class="number" id="exam-gauge-number" style="font-size:32px">0</div>
+                                            <div class="unit">percent</div>
+                                        </div>
+                                    </div>
+                                    <div class="gauge-label" id="exam-gauge-label">Low Risk</div>
+                                </div>
+                                <ul class="reasons-list" id="exam-reasons"></ul>
+                            </div>
+                        </div>
+
+                        <!-- Detection Status -->
+                        <div class="card">
+                            <div class="card-header"><h3>Detection Status</h3></div>
+                            <div class="card-body" style="padding:var(--space-sm) var(--space-md)">
+                                <table class="data-table" style="font-size:13px">
+                                    <tbody>
+                                        <tr><td>Face</td><td id="exam-det-face"><span class="badge badge-neutral">—</span></td></tr>
+                                        <tr><td>Gaze</td><td id="exam-det-gaze"><span class="badge badge-neutral">—</span></td></tr>
+                                        <tr><td>Eyes</td><td id="exam-det-eyes"><span class="badge badge-neutral">—</span></td></tr>
+                                        <tr><td>Mouth</td><td id="exam-det-mouth"><span class="badge badge-neutral">—</span></td></tr>
+                                        <tr><td>Objects</td><td id="exam-det-objects"><span class="badge badge-neutral">—</span></td></tr>
+                                        <tr><td>Multi-Face</td><td id="exam-det-multi"><span class="badge badge-neutral">—</span></td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ═══════════ DASHBOARD ═══════════ -->
+            <section class="page-section" id="page-dashboard">
+
+                <!-- Session Banner -->
+                <div class="session-banner inactive" id="dashboard-session-banner">
+                    <div class="session-banner-info">
+                        <div class="session-dot"></div>
+                        <span id="dashboard-session-text">No active session</span>
+                    </div>
+                    <span class="mono" id="dashboard-session-duration" style="font-size:13px; color:var(--color-text-muted)"></span>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid" id="dashboard-stats-grid">
+                    <div class="stat-card accent">
+                        <span class="stat-label">Cheating Probability</span>
+                        <span class="stat-value" id="stat-probability">0%</span>
+                        <span class="stat-detail">Rolling average</span>
+                    </div>
+                    <div class="stat-card success">
+                        <span class="stat-label">Face Detection</span>
+                        <span class="stat-value" id="stat-face">—</span>
+                        <span class="stat-detail">Present / Absent</span>
+                    </div>
+                    <div class="stat-card info">
+                        <span class="stat-label">Gaze Direction</span>
+                        <span class="stat-value" id="stat-gaze">—</span>
+                        <span class="stat-detail">Center / Left / Right</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Eye Status</span>
+                        <span class="stat-value" id="stat-eyes">—</span>
+                        <span class="stat-detail">Open / Closed</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Mouth Activity</span>
+                        <span class="stat-value" id="stat-mouth">—</span>
+                        <span class="stat-detail">Still / Moving</span>
+                    </div>
+                    <div class="stat-card danger">
+                        <span class="stat-label">Objects Detected</span>
+                        <span class="stat-value" id="stat-objects">—</span>
+                        <span class="stat-detail">Phone / Book</span>
+                    </div>
+                </div>
+
+                <!-- Two Column: Gauge + Alerts -->
+                <div class="two-col">
+                    <div class="card">
+                        <div class="card-header"><h3>Cheating Probability</h3></div>
+                        <div class="card-body">
+                            <div class="gauge-container">
+                                <div class="gauge-ring">
+                                    <svg viewBox="0 0 180 180">
+                                        <circle class="gauge-track" cx="90" cy="90" r="80"/>
+                                        <circle class="gauge-fill low" cx="90" cy="90" r="80" id="gauge-circle"/>
+                                    </svg>
+                                    <div class="gauge-value">
+                                        <div class="number" id="gauge-number">0</div>
+                                        <div class="unit">percent</div>
+                                    </div>
+                                </div>
+                                <div class="gauge-label" id="gauge-label">Low Risk</div>
+                            </div>
+                            <ul class="reasons-list" id="gauge-reasons"></ul>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Alerts</h3>
+                            <button class="btn btn-sm" data-page="alerts">View all →</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert-timeline" id="dashboard-alerts">
+                                <div class="empty-state">
+                                    <div class="empty-icon">🔔</div>
+                                    <h4>No alerts yet</h4>
+                                    <p>Alerts will appear here during monitoring</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ═══════════ MONITORING ═══════════ -->
+            <section class="page-section" id="page-monitoring">
+                <div class="section-header">
+                    <div>
+                        <h2>Live Monitoring</h2>
+                        <p>Real-time detection module status</p>
+                    </div>
+                </div>
+
+                <div class="detection-grid" id="monitoring-grid">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><h3>Detection Modules</h3></div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table class="data-table" id="modules-table">
+                                <thead>
+                                    <tr>
+                                        <th>Module</th>
+                                        <th>Status</th>
+                                        <th>Last Update</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="modules-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ═══════════ VIOLATIONS ═══════════ -->
+            <section class="page-section" id="page-violations">
+                <div class="section-header">
+                    <div>
+                        <h2>Violation Log</h2>
+                        <p>All recorded examination violations</p>
+                    </div>
+                </div>
+
+                <div class="toolbar">
+                    <div class="toolbar-filters">
+                        <select class="filter-select" id="violation-filter">
+                            <option value="">All Types</option>
+                            <option value="FACE_DISAPPEARED">Face Disappeared</option>
+                            <option value="MULTIPLE_FACES">Multiple Faces</option>
+                            <option value="OBJECT_DETECTED">Object Detected</option>
+                            <option value="MOUTH_MOVING">Mouth Moving</option>
+                            <option value="GAZE_AWAY">Gaze Away</option>
+                        </select>
+                    </div>
+                    <span class="stat-detail" id="violation-count">0 violations</span>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Type</th>
+                                <th>Probability</th>
+                                <th>Reasons</th>
+                            </tr>
+                        </thead>
+                        <tbody id="violations-tbody">
+                            <tr><td colspan="4"><div class="empty-state"><div class="empty-icon">✅</div><h4>No violations recorded</h4><p>Violations will appear here during proctoring</p></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+            <!-- ═══════════ ALERTS ═══════════ -->
+            <section class="page-section" id="page-alerts">
+                <div class="section-header">
+                    <div>
+                        <h2>Alert Log</h2>
+                        <p>System alerts and event history</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="alert-timeline" id="alerts-timeline" style="max-height: 600px">
+                            <div class="empty-state">
+                                <div class="empty-icon">🔔</div>
+                                <h4>No alerts recorded</h4>
+                                <p>Alerts will appear here as they are generated</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ═══════════ REPORTS ═══════════ -->
+            <section class="page-section" id="page-reports">
+                <div class="section-header">
+                    <div>
+                        <h2>Reports</h2>
+                        <p>Generated examination reports</p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Filename</th>
+                                <th>Format</th>
+                                <th>Size</th>
+                                <th>Created</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reports-tbody">
+                            <tr><td colspan="5"><div class="empty-state"><div class="empty-icon">📄</div><h4>No reports generated</h4><p>Reports are created at the end of each proctoring session</p></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+            <!-- ═══════════ RECORDINGS ═══════════ -->
+            <section class="page-section" id="page-recordings">
+                <div class="section-header">
+                    <div>
+                        <h2>Recordings</h2>
+                        <p>Webcam and screen capture recordings</p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Filename</th>
+                                <th>Type</th>
+                                <th>Size</th>
+                                <th>Created</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordings-tbody">
+                            <tr><td colspan="5"><div class="empty-state"><div class="empty-icon">🎥</div><h4>No recordings available</h4><p>Recordings are saved during proctoring sessions</p></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+            <!-- ═══════════ SESSIONS ═══════════ -->
+            <section class="page-section" id="page-sessions">
+                <div class="section-header">
+                    <div>
+                        <h2>Session Management</h2>
+                        <p>Start and manage exam proctoring sessions</p>
+                    </div>
+                </div>
+
+                <!-- Current Session Card -->
+                <div class="card" style="margin-bottom: var(--space-xl);">
+                    <div class="card-header"><h3>Current Session</h3></div>
+                    <div class="card-body" id="session-current-info">
+                        <div class="empty-state">
+                            <div class="empty-icon">🎓</div>
+                            <h4>No active session</h4>
+                            <p>Start a new session below to begin proctoring</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Start Session Form -->
+                <div class="card" id="session-form-card">
+                    <div class="card-header"><h3>Start New Session</h3></div>
+                    <div class="card-body">
+                        <form id="session-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Student ID</label>
+                                    <input class="form-input" type="text" id="inp-student-id" placeholder="e.g. STUDENT_001" value="STUDENT_001">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Student Name</label>
+                                    <input class="form-input" type="text" id="inp-student-name" placeholder="e.g. John Doe" value="John Doe">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Exam Name</label>
+                                    <input class="form-input" type="text" id="inp-exam-name" placeholder="e.g. Final Examination" value="Final Examination">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Course</label>
+                                    <input class="form-input" type="text" id="inp-course" placeholder="e.g. Computer Science 101" value="Computer Science 101">
+                                </div>
+                            </div>
+                            <div class="btn-group">
+                                <button type="submit" class="btn btn-primary" id="btn-start-session">▶ Start Session</button>
+                                <button type="button" class="btn btn-danger" id="btn-stop-session" disabled>■ Stop Session</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- ═══════════ SETTINGS ═══════════ -->
+            <section class="page-section" id="page-settings">
+                <div class="section-header">
+                    <div>
+                        <h2>Configuration</h2>
+                        <p>Detection thresholds, recording, and alert settings</p>
+                    </div>
+                    <button class="btn btn-primary" id="btn-save-config">Save Changes</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-body" id="settings-form-area">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

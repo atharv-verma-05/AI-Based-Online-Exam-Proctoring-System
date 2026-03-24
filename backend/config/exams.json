@@ -1,0 +1,26 @@
+[
+  {
+    "id": "final_cs101",
+    "name": "Final Examination",
+    "course": "Computer Science 101",
+    "duration_min": 120
+  },
+  {
+    "id": "midterm_math201",
+    "name": "Midterm Exam",
+    "course": "Mathematics 201",
+    "duration_min": 90
+  },
+  {
+    "id": "quiz_phy101",
+    "name": "Quiz 1",
+    "course": "Physics 101",
+    "duration_min": 30
+  },
+  {
+    "id": "mid_sem_224830",
+    "name": "Mid Sem",
+    "course": "defhi",
+    "duration_min": 60
+  }
+]

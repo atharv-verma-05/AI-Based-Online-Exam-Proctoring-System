@@ -1,0 +1,49 @@
+# ===============================
+# Core Computer Vision
+# ===============================
+opencv-python-headless>=4.5.0
+facenet-pytorch>=2.5.0
+mediapipe>=0.8.0
+ultralytics>=8.0.0
+
+# ===============================
+# Machine Learning Framework
+# ===============================
+torch>=1.7.0
+torchvision>=0.8.0
+torchaudio>=2.1.0
+
+# ===============================
+# Audio Processing (Windows-safe)
+# ===============================
+pygame>=2.1.2
+openai-whisper>=20231106
+gTTS>=2.3.1
+
+# ===============================
+# Screen Capture
+# ===============================
+mss>=6.1.0
+
+# ===============================
+# Reporting & Visualization
+# ===============================
+pdfkit>=1.0.0
+jinja2>=3.0.0
+matplotlib>=3.5.0
+Pillow>=9.0.0
+
+# ===============================
+# System Utilities
+# ===============================
+psutil>=5.8.0
+pyyaml>=5.0.0
+numpy>=1.20.0
+flask>=2.0.0
+flask-cors>=3.0.0
+gunicorn>=21.2.0
+
+# ===============================
+# Platform Specific
+# ===============================
+pywin32>=300; sys_platform == 'win32'
