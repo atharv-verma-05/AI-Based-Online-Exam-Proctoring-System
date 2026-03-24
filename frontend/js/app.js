@@ -9,7 +9,13 @@
     // ─────────────────────────────────────────────
     // Configuration
     // ─────────────────────────────────────────────
-    const API_BASE = window.location.origin;
+    // When Vercel builds the site, it will replace this placeholder with your .env variable.
+    // If running locally, it falls back to localhost:5001
+    const INJECTED_BACKEND_URL = '__BACKEND_URL__';
+    const API_BASE = (window.location.hostname.includes('localhost') || window.location.hostname.includes('127.0.0.1'))
+        ? 'http://localhost:5001'
+        : (INJECTED_BACKEND_URL.startsWith('__') ? window.location.origin : INJECTED_BACKEND_URL);
+
     const POLL_INTERVAL = 3000; // 3 seconds
     let pollTimer = null;
     let currentPage = 'exam';
