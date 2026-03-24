@@ -1,0 +1,7 @@
+{
+  "name": "exam-proctoring-frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "mkdir -p public && cp -r css js index.html public/ && if [ -n \"$BACKEND_URL\" ]; then sed -i 's|__BACKEND_URL__|'\"$BACKEND_URL\"'|g' public/js/app.js; fi"
+  }
+}
