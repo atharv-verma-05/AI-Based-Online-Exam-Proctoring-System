@@ -1,7 +1,4 @@
 {
-  "version": 2,
-  "buildCommand": "if [ -n \"$BACKEND_URL\" ]; then sed -i 's|__BACKEND_URL__|'\"$BACKEND_URL\"'|g' frontend/js/app.js; else echo 'No BACKEND_URL provided'; fi",
-  "outputDirectory": "frontend",
   "rewrites": [
     {
       "source": "/(.*)",
